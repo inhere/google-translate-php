@@ -1,13 +1,12 @@
 <?php
 
-namespace Stichoza\GoogleTranslate;
+namespace Inhere\GoogleTranslate;
 
 use BadMethodCallException;
 use ErrorException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Stichoza\GoogleTranslate\Tokens\GoogleTokenGenerator;
-use Stichoza\GoogleTranslate\Tokens\TokenProviderInterface;
+use Inhere\Comlib\HttpClient;
+use Inhere\GoogleTranslate\Tokens\GoogleTokenGenerator;
+use Inhere\GoogleTranslate\Tokens\TokenProviderInterface;
 use UnexpectedValueException;
 
 /**
@@ -20,7 +19,7 @@ use UnexpectedValueException;
 class GoogleTranslate
 {
     /**
-     * @var \GuzzleHttp\Client HTTP Client
+     * @var HttpClient HTTP Client
      */
     protected $client;
 
@@ -108,7 +107,7 @@ class GoogleTranslate
      */
     public function __construct(string $target = 'en', string $source = null, array $options = null, TokenProviderInterface $tokenProvider = null)
     {
-        $this->client = new Client();
+        $this->client = new HttpClient();
         $this->setTokenProvider($tokenProvider ?? new GoogleTokenGenerator)
             ->setOptions($options) // Options are already set in client constructor tho.
             ->setSource($source)

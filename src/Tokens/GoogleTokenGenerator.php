@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Stichoza\GoogleTranslate\Tokens;
+namespace Inhere\GoogleTranslate\Tokens;
 
 /**
  * Google Token Generator.
@@ -129,7 +129,7 @@ class GoogleTokenGenerator implements TokenProviderInterface
             $a &= 2147483647;
             $a |= 0x40000000;
             $a = ($a >> ($b - 1));
-        } else { 
+        } else {
             $a = ($a >> $b);
         }
 

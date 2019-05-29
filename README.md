@@ -5,6 +5,9 @@ Google Translate PHP
 
 Free Google Translate API PHP Package. Translates totally free of charge.
 
+> Notice: this repo is forked from [Stichoza/google-translate-php](http://github.com/Stichoza/google-translate-php). 
+Change some logic for support swoft 2
+
 ---
 
  - **[Installation](#installation)**
@@ -39,22 +42,30 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 $tr = new GoogleTranslate('en'); // Translates into English
 ```
+
 Or you can change languages later
+
 ```php
 $tr = new GoogleTranslate(); // Translates to 'en' from auto-detected language by default
 $tr->setSource('en'); // Translate from English
 $tr->setSource(); // Detect language automatically
 $tr->setTarget('ka'); // Translate to Georgian
 ```
+
 Translate sentences
+
 ```php
 echo $tr->translate('Hello World!');
 ```
+
 Also, you can also use method chaining
+
 ```php
 echo $tr->setSource('en')->setTarget('ka')->translate('Goodbye');
 ```
+
 Or call a shorthand static method `trans`
+
 ```php
 echo GoogleTranslate::trans('Hello again', 'ka', 'en');
 ```

@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Stichoza\GoogleTranslate\Tokens;
+namespace Inhere\GoogleTranslate\Tokens;
 
 /**
  * A nice interface for providing tokens.
