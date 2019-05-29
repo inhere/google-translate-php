@@ -15,10 +15,11 @@ class GoogleTokenGenerator implements TokenProviderInterface
      *
      * @param string $source Source language
      * @param string $target Target language
-     * @param string $text Text to translate
+     * @param string $text   Text to translate
+     *
      * @return string Token
      */
-    public function generateToken(string $source, string $target, string $text) : string
+    public function generateToken(string $source, string $target, string $text): string
     {
         return $this->TL($text);
     }
@@ -33,7 +34,7 @@ class GoogleTokenGenerator implements TokenProviderInterface
     private function TL($a)
     {
         $tkk = $this->TKK();
-        $b = $tkk[0];
+        $b   = $tkk[0];
 
         for ($d = [], $e = 0, $f = 0; $f < $this->JS_length($a); $f++) {
             $g = $this->JS_charCodeAt($a, $f);
@@ -44,7 +45,7 @@ class GoogleTokenGenerator implements TokenProviderInterface
                     $d[$e++] = $g >> 6 | 192;
                 } else {
                     if (55296 == ($g & 64512) && $f + 1 < $this->JS_length($a) && 56320 == ($this->JS_charCodeAt($a, $f + 1) & 64512)) {
-                        $g = 65536 + (($g & 1023) << 10) + ($this->JS_charCodeAt($a, ++$f) & 1023);
+                        $g       = 65536 + (($g & 1023) << 10) + ($this->JS_charCodeAt($a, ++$f) & 1023);
                         $d[$e++] = $g >> 18 | 240;
                         $d[$e++] = $g >> 12 & 63 | 128;
                     } else {
@@ -55,9 +56,11 @@ class GoogleTokenGenerator implements TokenProviderInterface
                 $d[$e++] = $g & 63 | 128;
             }
         }
+
         $a = $b;
-        for ($e = 0; $e < count($d); $e++) {
-            $a += $d[$e];
+        // for ($e = 0, $eMax = count($d); $e < $eMax; $e++) {
+        foreach ($d as $eValue) {
+            $a += $eValue;
             $a = $this->RL($a, '+-a^+6');
         }
         $a = $this->RL($a, '+-3^+b+-f');
@@ -67,22 +70,22 @@ class GoogleTokenGenerator implements TokenProviderInterface
         }
         $a = fmod($a, pow(10, 6));
 
-        return $a.'.'.($a ^ $b);
+        return $a . '.' . ($a ^ $b);
     }
 
     /**
      * @return array
      */
-    private function TKK()
+    private function TKK(): array
     {
-        return ['406398', (561666268 + 1526272306)];
+        return ['406398', 561666268 + 1526272306];
     }
 
     /**
      * Process token data by applying multiple operations.
      * (Params are safe, no need for multibyte functions)
      *
-     * @param int $a
+     * @param int    $a
      * @param string $b
      *
      * @return int
@@ -91,7 +94,7 @@ class GoogleTokenGenerator implements TokenProviderInterface
     {
         for ($c = 0; $c < strlen($b) - 2; $c += 3) {
             $d = $b[$c + 2];
-            $d = 'a' <= $d ? ord($d[0]) - 87 : intval($d);
+            $d = 'a' <= $d ? ord($d[0]) - 87 : (int)$d;
             $d = '+' == $b[$c + 1] ? $this->unsignedRightShift($a, $d) : $a << $d;
             $a = '+' == $b[$c] ? ($a + $d & 4294967295) : $a ^ $d;
         }
@@ -144,9 +147,10 @@ class GoogleTokenGenerator implements TokenProviderInterface
      *
      * @return number
      */
-    private function JS_charCodeAt($str, $index) {
+    private function JS_charCodeAt($str, $index)
+    {
         $utf16 = mb_convert_encoding($str, 'UTF-16LE', 'UTF-8');
-        return ord($utf16[$index*2]) + (ord($utf16[$index*2+1]) << 8);
+        return ord($utf16[$index * 2]) + (ord($utf16[$index * 2 + 1]) << 8);
     }
 
     /**
@@ -156,8 +160,9 @@ class GoogleTokenGenerator implements TokenProviderInterface
      *
      * @return number
      */
-    private function JS_length($str) {
+    private function JS_length($str)
+    {
         $utf16 = mb_convert_encoding($str, 'UTF-16LE', 'UTF-8');
-        return strlen($utf16)/2;
+        return strlen($utf16) / 2;
     }
 }

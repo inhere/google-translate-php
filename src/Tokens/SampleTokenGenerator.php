@@ -17,7 +17,7 @@ class SampleTokenGenerator implements TokenProviderInterface
      * @return string Token
      * @throws \Exception
      */
-    public function generateToken(string $source, string $target, string $text) : string
+    public function generateToken(string $source, string $target, string $text): string
     {
         return sprintf('%d.%d', random_int(10000, 99999), random_int(10000, 99999));
     }
