@@ -1,18 +1,23 @@
 <?php
 
-namespace Stichoza\GoogleTranslate\Tests;
+namespace Inhere\GoogleTranslate\Tests;
 
 use ReflectionClass;
 use PHPUnit\Framework\TestCase;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+use Inhere\GoogleTranslate\GoogleTranslate;
 
+/**
+ * Class UtilityTest
+ *
+ * @package Inhere\GoogleTranslate\Tests
+ */
 class UtilityTest extends TestCase
 {
     public $tr;
 
     public $method;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->tr = new GoogleTranslate();
         $reflection = new ReflectionClass(get_class($this->tr));

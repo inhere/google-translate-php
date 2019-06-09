@@ -1,15 +1,20 @@
 <?php
 
-namespace Stichoza\GoogleTranslate\Tests;
+namespace Inhere\GoogleTranslate\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+use Inhere\GoogleTranslate\GoogleTranslate;
 
+/**
+ * Class LanguageDetectionTest
+ *
+ * @package Inhere\GoogleTranslate\Tests
+ */
 class LanguageDetectionTest extends TestCase
 {
     public $tr;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->tr = new GoogleTranslate();
     }

@@ -3,6 +3,7 @@
 namespace Inhere\GoogleTranslate;
 
 use ErrorException;
+use http\Exception\RuntimeException;
 use Inhere\Comlib\HttpClient;
 use Inhere\GoogleTranslate\Tokens\GoogleTokenGenerator;
 use Inhere\GoogleTranslate\Tokens\TokenProviderInterface;
@@ -32,19 +33,19 @@ class GoogleTranslate
     protected $client;
 
     /**
-     * @var string|null Source language - from where the string should be translated
+     * @var string Source language - from where the string should be translated
      */
-    protected $source;
+    protected $source = 'auto';
 
     /**
      * @var string Target language - to which language string should be translated
      */
-    protected $target;
+    protected $target = '';
 
     /**
-     * @var string|null Last detected source language
+     * @var string Last detected source language
      */
-    protected $lastDetectedSource;
+    protected $lastDetectedSource = '';
 
     /**
      * @var string Google Translate URL base
@@ -124,7 +125,7 @@ class GoogleTranslate
      * @param TokenProviderInterface|null $tokenProvider
      */
     public function __construct(
-        string $target = 'en', string $source = null, array $options = null,
+        string $target = 'en', string $source = '', array $options = [],
         TokenProviderInterface $tokenProvider = null
     ) {
         $this->client = new HttpClient();
@@ -153,9 +154,9 @@ class GoogleTranslate
      *
      * @return GoogleTranslate
      */
-    public function setSource(string $source = null): self
+    public function setSource(string $source): self
     {
-        $this->source = $source ?? 'auto';
+        $this->source = $source ?: 'auto';
         return $this;
     }
 
@@ -179,9 +180,9 @@ class GoogleTranslate
      *
      * @return GoogleTranslate
      */
-    public function setOptions(array $options = null): self
+    public function setOptions(array $options): self
     {
-        $this->options = $options ?? [];
+        $this->options = $options;
         return $this;
     }
 
@@ -201,9 +202,9 @@ class GoogleTranslate
     /**
      * Get last detected source language
      *
-     * @return string|null Last detected source language
+     * @return string Last detected source language
      */
-    public function getLastDetectedSource()
+    public function getLastDetectedSource(): string
     {
         return $this->lastDetectedSource;
     }
@@ -223,7 +224,7 @@ class GoogleTranslate
      * @throws ContainerException
      */
     public static function trans(
-        string $string, string $target = 'en', string $source = null, array $options = [],
+        string $string, string $target = 'en', string $source = '', array $options = [],
         TokenProviderInterface $tokenProvider = null
     ) {
         return (new self)->setTokenProvider($tokenProvider ?? new GoogleTokenGenerator)
@@ -338,15 +339,17 @@ class GoogleTranslate
                     'query' => $queryUrl,
                     'body'  => $queryBodyEncoded,
                 ] + $this->options);
+
+            \var_dump($this->client->getFullUrl(), $this->client->getRawResult());
         } catch (Throwable $e) {
-            throw new ErrorException($e->getMessage());
+            throw new \RuntimeException('error on translate', 500, $e);
         }
 
         $body = $response->getBody(); // Get response body
 
         // Modify body to avoid json errors
         $bodyJson = preg_replace(array_keys($this->resultRegexes), array_values($this->resultRegexes), $body);
-
+\var_dump($bodyJson);
         // Decode JSON data
         if (($bodyArray = json_decode($bodyJson, true)) === null) {
             throw new UnexpectedValueException('Data cannot be decoded or it is deeper than the recursion limit');

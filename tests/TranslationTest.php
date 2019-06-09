@@ -1,15 +1,17 @@
 <?php
 
-namespace Stichoza\GoogleTranslate\Tests;
+namespace Inhere\GoogleTranslate\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+use Inhere\GoogleTranslate\GoogleTranslate;
+use Swoole\Event;
 
 class TranslationTest extends TestCase
 {
+    /** @var GoogleTranslate */
     public $tr;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->tr = new GoogleTranslate();
     }
@@ -38,7 +40,24 @@ class TranslationTest extends TestCase
         $this->assertEquals($resultOne, $resultTwo, 'ja 👍🏽');
     }
 
-    public function testRawResponse()
+    public function testZhCNTranslation(): void
+    {
+        \go(function () {
+            try {
+                $resultOne = GoogleTranslate::trans('欢迎你', 'en', 'zh-CN');
+            } catch (\ErrorException $e) {
+                $resultOne = null;
+            }
+
+            $resultTwo = $this->tr->setSource('zh-CN')->setTarget('en')->translate('欢迎你');
+
+            $this->assertEquals($resultOne, $resultTwo, 'Welcome');
+        });
+
+        Event::wait();
+    }
+
+    public function testRawResponse(): void
     {
         $rawResult = $this->tr->getResponse('cat');
 

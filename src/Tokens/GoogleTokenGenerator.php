@@ -5,7 +5,7 @@ namespace Inhere\GoogleTranslate\Tokens;
 /**
  * Google Token Generator.
  *
- * Thanks to @helen5106 and @tehmaestro and few other cool guys
+ * Thanks to 'helen5106' and 'tehmaestro' and few other cool guys
  * at https://github.com/Stichoza/google-translate-php/issues/32
  */
 class GoogleTokenGenerator implements TokenProviderInterface
@@ -31,7 +31,7 @@ class GoogleTokenGenerator implements TokenProviderInterface
      *
      * @return string
      */
-    private function TL($a)
+    private function TL($a): string
     {
         $tkk = $this->TKK();
         $b   = $tkk[0];
